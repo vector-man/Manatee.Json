@@ -41,6 +41,20 @@ namespace Manatee.Json.Parsing
 										 .ToList();
 		}
 
+		public static void AddParser(IJsonParser parser)
+		{
+			var newParserType = parser.GetType();
+			if (Parsers.Any(p => p.GetType() == newParserType)) return;
+			Parsers.Add(parser);
+		}
+		public static void RemoveParser<T>()
+			where T : IJsonParser
+		{
+			var parser = Parsers.OfType<T>().FirstOrDefault();
+			if (parser != null)
+				Parsers.Remove(parser);
+		}
+
 		public static JsonValue Parse(string source)
 		{
 			var index = 0;
@@ -60,39 +74,37 @@ namespace Manatee.Json.Parsing
 		}
 		public static string Parse(string source, ref int index, out JsonValue value)
 		{
+			value = null;
 			var length = source.Length;
-			char c;
-			var errorMessage = source.SkipWhiteSpace(ref index, length, out  c);
-			if (errorMessage != null)
+			string errorMessage = null;
+			while (value == null && errorMessage == null)
 			{
-				value = null;
-				return errorMessage;
+				char c;
+				errorMessage = source.SkipWhiteSpace(ref index, length, out  c);
+				if (errorMessage != null)
+					return errorMessage;
+				var parser = Parsers.FirstOrDefault(p => p.Handles(c));
+				if (parser == null)
+					return "Cannot determine type.";
+				errorMessage = parser.TryParse(source, ref index, out value);
 			}
-			var parser = Parsers.FirstOrDefault(p => p.Handles(c));
-			if (parser == null)
-			{
-				value = null;
-				return "Cannot determine type.";
-			}
-			errorMessage = parser.TryParse(source, ref index, out value);
 			return errorMessage;
 		}
 		public static string Parse(StreamReader stream, out JsonValue value)
 		{
-			char c;
-			var errorMessage = stream.SkipWhiteSpace(out  c);
-			if (errorMessage != null)
+			value = null;
+			string errorMessage = null;
+			while (value == null && errorMessage == null)
 			{
-				value = null;
-				return errorMessage;
+				char c;
+				errorMessage = stream.SkipWhiteSpace(out  c);
+				if (errorMessage != null)
+					return errorMessage;
+				var parser = Parsers.FirstOrDefault(p => p.Handles(c));
+				if (parser == null)
+					return "Cannot determine type.";
+				errorMessage = parser.TryParse(stream, out value);
 			}
-			var parser = Parsers.FirstOrDefault(p => p.Handles(c));
-			if (parser == null)
-			{
-				value = null;
-				return "Cannot determine type.";
-			}
-			errorMessage = parser.TryParse(stream, out value);
 			return errorMessage;
 		}
 	}

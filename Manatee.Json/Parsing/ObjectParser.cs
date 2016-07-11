@@ -52,13 +52,12 @@ namespace Manatee.Json.Parsing
 					}
 					else return "Expected key.";
 				// get key
-				message = source.SkipWhiteSpace(ref index, length, out c);
+				JsonValue keyValue = null;
+				while (keyValue == null && message == null)
+					message = JsonParser.Parse(source, ref index, out keyValue);
+				if (keyValue == null || keyValue.Type != JsonValueType.String) return "Expected key.";
 				if (message != null) return message;
-				if (c != '\"') return "Expected key.";
-				JsonValue item;
-				message = JsonParser.Parse(source, ref index, out item);
-				if (message != null) return message;
-				var key = item.String;
+				var key = keyValue.String;
 				// check for colon
 				message = source.SkipWhiteSpace(ref index, length, out c);
 				if (message != null) return message;
@@ -69,6 +68,7 @@ namespace Manatee.Json.Parsing
 				}
 				index++;
 				// get value (whitespace is removed in Parse)
+				JsonValue item;
 				message = JsonParser.Parse(source, ref index, out item);
 				obj.Add(key, item);
 				if (message != null) return message;
@@ -103,13 +103,12 @@ namespace Manatee.Json.Parsing
 					}
 					else return "Expected key.";
 				// get key
-				message = stream.SkipWhiteSpace(out c);
+				JsonValue keyValue = null;
+				while (keyValue == null && message == null)
+					message = JsonParser.Parse(stream, out keyValue);
+				if (keyValue == null || keyValue.Type != JsonValueType.String) return "Expected key.";
 				if (message != null) return message;
-				if (c != '\"') return "Expected key.";
-				JsonValue item;
-				message = JsonParser.Parse(stream, out item);
-				if (message != null) return message;
-				var key = item.String;
+				var key = keyValue.String;
 				// check for colon
 				message = stream.SkipWhiteSpace(out c);
 				if (message != null) return message;
@@ -120,6 +119,7 @@ namespace Manatee.Json.Parsing
 				}
 				stream.Read(); // waste the ':'
 				// get value (whitespace is removed in Parse)
+				JsonValue item;
 				message = JsonParser.Parse(stream, out item);
 				obj.Add(key, item);
 				if (message != null) return message;

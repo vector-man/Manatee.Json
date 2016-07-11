@@ -213,6 +213,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Manatee.Json.AddOns\Manatee.Json.AddOns.csproj">
+      <Project>{7FC20FD3-3779-46C8-964E-5245E51D25C6}</Project>
+      <Name>Manatee.Json.AddOns</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Manatee.Json\Manatee.Json.csproj">
       <Project>{6adf0bcf-4e46-4605-a784-51ea6dac81c7}</Project>
       <Name>Manatee.Json</Name>

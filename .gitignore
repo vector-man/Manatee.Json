@@ -12,3 +12,7 @@
 /Manatee.Json.Tests/obj
 /NuGet
 /TestResults
+/Manatee.Json.AddOns/bin
+/Manatee.Json.AddOns/obj
+/Manatee.Json.AddOns.Tests/bin
+/Manatee.Json.AddOns.Tests/obj

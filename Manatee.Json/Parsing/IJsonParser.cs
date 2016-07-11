@@ -25,7 +25,7 @@ using System.IO;
 
 namespace Manatee.Json.Parsing
 {
-	internal interface IJsonParser
+	public interface IJsonParser
 	{
 		bool Handles(char c);
 		// returns error message, if any.  Null return implies success.

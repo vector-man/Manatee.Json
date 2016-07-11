@@ -215,6 +215,7 @@
     <Compile Include="JsonArrayExtensions.cs" />
     <Compile Include="Internal\GeneralExtensions.cs" />
     <Compile Include="Internal\CharacterConverter.cs" />
+    <Compile Include="JsonConfiguration.cs" />
     <Compile Include="JsonSyntaxException.cs" />
     <Compile Include="JsonValueIncorrectTypeException.cs" />
     <Compile Include="JsonArray.cs" />
