@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 ***************************************************************************************/
 
-using System.Collections.Generic;
 using System.Linq;
 using Manatee.Json.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,35 +31,27 @@ namespace Manatee.Json.Tests.Schema
 	public class NotSchemaTest
 	{
 		[TestMethod]
-		public void ValidateReturnsErrorOnAnyInvalid()
+		public void ValidateReturnsErrorOnInvalid()
 		{
-			var schema = new NotSchema
+			var schema = new JsonSchema
 				{
-					Restrictions = new List<IJsonSchema>
-						{
-							new ArraySchema(),
-							new NumberSchema()
-						}
+					Not = new JsonSchema {Type = JsonSchemaTypeDefinition.Array}
 				};
 			var json = new JsonArray();
 
 			var results = schema.Validate(json);
 
-			Assert.AreNotEqual(0, results.Errors.Count());
+			Assert.AreEqual(1, results.Errors.Count());
 			Assert.AreEqual(false, results.Valid);
 		}
 		[TestMethod]
-		public void ValidateReturnsValidOnAllValid()
+		public void ValidateReturnsValid()
 		{
-			var schema = new NotSchema
-				{
-					Restrictions = new List<IJsonSchema>
-						{
-							new NumberSchema {Maximum = 10},
-							new NumberSchema {Minimum = 20}
-						}
+			var schema = new JsonSchema
+			{
+					Not = new JsonSchema { Type = JsonSchemaTypeDefinition.Number,Maximum = 10}
 				};
-			var json = new JsonObject();
+			var json = (JsonValue) 15;
 
 			var results = schema.Validate(json);
 

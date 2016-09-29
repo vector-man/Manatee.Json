@@ -4,6 +4,7 @@ using System.Linq;
 using Manatee.Json.Path;
 using Manatee.Json.Schema;
 using Manatee.Json.Serialization;
+using Manatee.Json.Tests.Path;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Manatee.Json.Tests
@@ -118,23 +119,24 @@ namespace Manatee.Json.Tests
 		{
 			var text = "{\"type\":\"object\",\"properties\":{\"home\":{\"type\":[\"object\",\"null\"],\"properties\":{\"street\":{\"type\":\"string\"}}}}}";
 			var json = JsonValue.Parse(text);
-			var expected = new ObjectSchema
+			var expected = new JsonSchema
 				{
+					Type = JsonSchemaTypeDefinition.Object,
 					Properties = new JsonSchemaPropertyDefinitionCollection
 						{
 							new JsonSchemaPropertyDefinition("home")
 								{
-									Type = new MultiSchema(new ObjectSchema
+									Type = new JsonSchema
 										{
+											Type = new JsonSchemaMultiTypeDefinition(JsonSchemaTypeDefinition.Object, JsonSchemaTypeDefinition.Null),
 											Properties = new JsonSchemaPropertyDefinitionCollection
 												{
 													new JsonSchemaPropertyDefinition("street")
 														{
-															Type = new StringSchema()
+															Type = new JsonSchema {Type = JsonSchemaTypeDefinition.String}
 														}
 												}
-										},
-									                       new NullSchema())
+										}
 								}
 						}
 				};
@@ -149,10 +151,10 @@ namespace Manatee.Json.Tests
 		{
 			var text = "{\"type\":\"string\",\"enum\":[\"FeatureCollection\"]}";
 			var json = JsonValue.Parse(text);
-			var expected = new EnumSchema
+			var expected = new JsonSchema
 				{
 					Type = JsonSchemaTypeDefinition.String,
-					Values = new List<EnumSchemaValue>
+					Enum = new List<EnumSchemaValue>
 						{
 							new EnumSchemaValue("FeatureCollection")
 						}
@@ -183,6 +185,30 @@ namespace Manatee.Json.Tests
 
 			Assert.AreEqual(0, results.Errors.Count());
 			Assert.AreEqual(true, results.Valid);
+		}
+
+		[TestMethod]
+		public void Issue31_JsonPathArrayOperatorShouldWorkOnObjects_Parsed()
+		{
+			var json = GoessnerExamplesTest.GoessnerData;
+			var path = JsonPath.Parse(@"$.store.bicycle[?(1==1)]");
+
+			var results = path.Evaluate(json);
+
+			Assert.AreEqual(new JsonArray { "red", 19.95 }, results);
+		}
+
+		[TestMethod]
+		public void Issue31_JsonPathArrayOperatorShouldWorkOnObjects_Constructed()
+		{
+			var json = GoessnerExamplesTest.GoessnerData;
+			var path = JsonPathWith.Name("store")
+			                       .Name("bicycle")
+			                       .Array(jv => 1 == 1);
+
+			var results = path.Evaluate(json);
+
+			Assert.AreEqual(new JsonArray { "red", 19.95 }, results);
 		}
 	}
 }

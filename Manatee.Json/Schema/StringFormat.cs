@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ namespace Manatee.Json.Schema
 		/// <summary>
 		/// Defines a URI format via <see cref="System.Uri.IsWellFormedUriString(string, UriKind)"/>
 		/// </summary>
-		public static readonly StringFormat Uri = new StringFormat("uri", s => System.Uri.IsWellFormedUriString(s, UriKind.Absolute));
+		public static readonly StringFormat Uri = new StringFormat("uri", s => System.Uri.IsWellFormedUriString(s, UriKind.RelativeOrAbsolute));
 
 		private static readonly Dictionary<string, StringFormat> _lookup = new Dictionary<string, StringFormat>
 				{

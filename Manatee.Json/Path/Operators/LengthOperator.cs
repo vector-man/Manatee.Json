@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -21,11 +21,12 @@
 					returns the number of items.
 
 ***************************************************************************************/
+using System;
 using System.Linq;
 
 namespace Manatee.Json.Path.Operators
 {
-	internal class LengthOperator : IJsonPathOperator
+	internal class LengthOperator : IJsonPathOperator, IEquatable<LengthOperator>
 	{
 		public static LengthOperator Instance { get; } = new LengthOperator();
 
@@ -37,7 +38,20 @@ namespace Manatee.Json.Path.Operators
 		}
 		public override string ToString()
 		{
-			return string.Format(".length");
+			return ".length";
+		}
+		public bool Equals(LengthOperator other)
+		{
+			return !ReferenceEquals(null, other);
+		}
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as LengthOperator);
+		}
+		public override int GetHashCode()
+		{
+			// ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+			return base.GetHashCode();
 		}
 	}
 }

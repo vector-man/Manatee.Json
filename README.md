@@ -1,6 +1,11 @@
 #Manatee.Json
 
-The primary goal of Manatee.Json is to make working with JSON simple and intuitive for the developer.
+[![Join the chat at https://gitter.im/gregsdennis/Manatee.Json](https://badges.gitter.im/gregsdennis/Manatee.Json.svg)](https://gitter.im/gregsdennis/Manatee.Json?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![Build Status](https://ci.appveyor.com/api/projects/status/39glrlct0u3leyla/branch/master?svg=true)
+
+The primary goal of Manatee.Json is to make working with JSON simple and intuitive for the developer.  This library recognizes that JSON is much more than just a mechanism for data transfer.
+
+Secondarily, Manatee.Json is *intended* to be strictly ECMA-404 compliant, which means that it purposefully does not support JSON variants, like single-quoted strings or BSON.
 
 ##Read from a file
 
@@ -34,7 +39,7 @@ Manatee.Json defines implicit conversions to `JsonValue` from `Boolean`, `Double
               num = 10,
               boolean = false;
 
-Because the collection types are derived from common .Net types, you get all of the initialization capabilities.
+Because the collection types are derived from core .Net types, you also get all of the initialization capabilities.
 
     var obj = new JsonObject
         {
@@ -45,7 +50,7 @@ Because the collection types are derived from common .Net types, you get all of 
 
 ##Serialization
 
-Converting .Net object to and from JSON is also simple:
+Converting .Net objects to and from JSON is also simple:
 
 1. Create a serializer
 
@@ -69,7 +74,7 @@ Manatee.Json also:
 - Supports JSONPath (with object model and compile-time checking)
 - Is fully LINQ-compatible
 - Converts between JSON and XML
-- Parsing errors are reported using JSONPath to identify location
+- Reports parsing errors using JSONPath to identify location
 - Supports streamed parsing
 - Is fully open-source
 - Uses the Apache 2.0 license
@@ -78,11 +83,12 @@ Serialization features:
 
 - De/Serialize abstraction types (abstract classes and interfaces) by type registration
 - JIT type creation for unregistered abstraction types
-- De/Serializes anonymous types
+- De/Serialize anonymous types
 - Fully customizable serialization of both 1st- and 3rd-party types
 - De/Serialize static types/properties
 - De/Serialize fields
 - De/Serialize enumerations by name or numeric value
+- Maintain object references/graphs
 - De/Serialize circular references
 - Optionally include type names
 - Each serializer instance can be independently configured

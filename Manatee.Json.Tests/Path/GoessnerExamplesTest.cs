@@ -1,7 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/***************************************************************************************
+
+	Copyright 2016 Greg Dennis
+
+	   Licensed under the Apache License, Version 2.0 (the "License");
+	   you may not use this file except in compliance with the License.
+	   You may obtain a copy of the License at
+
+		 http://www.apache.org/licenses/LICENSE-2.0
+
+	   Unless required by applicable law or agreed to in writing, software
+	   distributed under the License is distributed on an "AS IS" BASIS,
+	   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	   See the License for the specific language governing permissions and
+	   limitations under the License.
+ 
+	File Name:		GoessnerExamplesTest.cs
+	Namespace:		Manatee.Json.Tests.Path
+	Class Name:		GoessnerExamplesTest
+	Purpose:		Tests for the examples of JSONPath presented on Stefan Goessner's
+					site, http://goessner.net/articles/JsonPath/.
+
+***************************************************************************************/
+using System;
 using Manatee.Json.Path;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +30,7 @@ namespace Manatee.Json.Tests.Path
 	[TestClass]
 	public class GoessnerExamplesTest
 	{
-		private static readonly JsonValue GoessnerData =
+		public static readonly JsonValue GoessnerData =
 			new JsonObject
 				{
 					{
@@ -312,7 +332,7 @@ namespace Manatee.Json.Tests.Path
 		[TestMethod]
 		public void GoessnerExample6BConstructed()
 		{
-			var path = JsonPathWith.Search("book").ArraySlice(-1, null);
+			var path = JsonPathWith.Search("book").Array(new Slice(-1, null));
 			var expected = new JsonArray
 				{
 					new JsonObject
@@ -406,7 +426,7 @@ namespace Manatee.Json.Tests.Path
 		[TestMethod]
 		public void GoessnerExample7BConstructed()
 		{
-			var path = JsonPathWith.Search("book").ArraySlice(null, 2);
+			var path = JsonPathWith.Search("book").Array(new Slice(null, 2));
 			var expected = new JsonArray
 				{
 					new JsonObject

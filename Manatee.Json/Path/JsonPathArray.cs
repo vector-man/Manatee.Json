@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace Manatee.Json.Path
 	/// <summary>
 	/// Serves as a stand-in for JsonArray in Path Expressions.
 	/// </summary>
-	public class JsonPathArray
+	public sealed class JsonPathArray
 	{
 		 
 	}

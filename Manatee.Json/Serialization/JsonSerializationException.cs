@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -25,8 +25,14 @@ using System;
 
 namespace Manatee.Json.Serialization
 {
+	/// <summary>
+	/// Thrown when an error occurs during serialization or deserialization.
+	/// </summary>
 	public class JsonSerializationException : Exception
 	{
+		/// <summary>
+		/// Creates a new instance of the <see cref="JsonSerializationException"/> class.
+		/// </summary>
 		public JsonSerializationException(string message)
 			: base(message){}
 	}

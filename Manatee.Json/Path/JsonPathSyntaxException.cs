@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -47,11 +47,11 @@ namespace Manatee.Json.Path
 		/// The error message that explains the reason for the exception, or an empty string("").
 		/// </returns>
 		/// <filterpriority>1</filterpriority>
-		public override string Message => string.Format(_isExpression ? "{0} Expression up to error: {1}" : "{0} Path up to error: {1}", base.Message, Path);
+		public override string Message => string.Format(_isExpression ? "{0} Expression up to error: '{1}'" : "{0} Path up to error: '{1}'", base.Message, Path);
 
 		[StringFormatMethod("format")]
-		internal JsonPathSyntaxException(JsonPath path, string format, params object[] parameters)
-			: base(string.Format(format, parameters))
+		internal JsonPathSyntaxException(JsonPath path, string message)
+			: base(message)
 		{
 			Path = path.ToString();
 		}

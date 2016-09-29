@@ -17,7 +17,7 @@
 	File Name:		JsonSchemaMultiTypeDefinition.cs
 	Namespace:		Manatee.Json.Schema
 	Class Name:		JsonSchemaMultiTypeDefinition
-	Purpose:		Supports a collection of types.
+	Purpose:		Supports a collection of schema types.
 
 ***************************************************************************************/
 
@@ -29,70 +29,97 @@ using Manatee.Json.Serialization;
 
 namespace Manatee.Json.Schema
 {
-	internal class JsonSchemaMultiTypeDefinition : JsonSchemaTypeDefinition
+	/// <summary>
+	/// Supports a collection of schema types.
+	/// </summary>
+	public class JsonSchemaMultiTypeDefinition : JsonSchemaTypeDefinition
 	{
-		private IEnumerable<IJsonSchema> _definitions;
+		private readonly bool _nonPrimitiveAllowed;
+		private IEnumerable<JsonSchemaTypeDefinition> _definitions;
 
-		public JsonSchemaMultiTypeDefinition(IEnumerable<IJsonSchema> definitions)
+		internal IEnumerable<JsonSchemaTypeDefinition> Defintions => _definitions;
+		internal bool IsPrimitive => !_nonPrimitiveAllowed; 
+
+		/// <summary>
+		/// Creates a new instance of the <see cref="JsonSchemaMultiTypeDefinition"/> class.
+		/// </summary>
+		public JsonSchemaMultiTypeDefinition(params JsonSchemaTypeDefinition[] definitions)
+			: this(false)
 		{
 			_definitions = definitions.ToList();
 
-			if (_definitions.Any(d => PrimitiveDefinitions.All(p => p.Definition.GetType() != d.GetType())))
+			if (_definitions.Except(PrimitiveDefinitions).Any())
 				throw new InvalidOperationException("Only primitive types are allowed in type collections.");
 
-			Definition = new OneOfSchema {Options = _definitions};
+			Definition = new JsonSchema { OneOf = _definitions.Select(d => d.Definition) };
 		}
-
-		public void AppendJson(JsonValue json, JsonSerializer serializer)
+		internal JsonSchemaMultiTypeDefinition(bool nonPrimitiveAllowed)
 		{
-			if (json.Type != JsonValueType.Object) return;
-
-			// we want to reverse so that the first entry has priority
-			var properties = _definitions.Select(d => d.ToJson(serializer))
-			                             .SelectMany(jv => jv.Object)
-										 .GroupBy(kvp => kvp.Key)
-										 .Select(g => g.First())
-			                             .ToList();
-			foreach (var property in properties)
-			{
-				json.Object[property.Key] = property.Value;
-			}
+			_nonPrimitiveAllowed = nonPrimitiveAllowed;
 		}
 
+		/// <summary>
+		/// Builds an object from a <see cref="JsonValue"/>.
+		/// </summary>
+		/// <param name="json">The <see cref="JsonValue"/> representation of the object.</param>
+		/// <param name="serializer">The <see cref="JsonSerializer"/> instance to use for additional
+		/// serialization of values.</param>
 		public override void FromJson(JsonValue json, JsonSerializer serializer)
 		{
-			var typeEntry = json.Object["type"].Array;
-			var jsonWithoutType = json.Object.Where(kvp => kvp.Key != "type").ToJson();
+			var typeEntry = json.Array;
 			_definitions = typeEntry.Select(jv =>
 				{
-					var schema = JsonSchemaFactory.GetPrimitiveSchema(jv.String);
-					schema.FromJson(jsonWithoutType, serializer);
-					return schema;
+					if (_nonPrimitiveAllowed) return new JsonSchemaTypeDefinition(JsonSchemaFactory.FromJson(jv));
+					var definition = PrimitiveDefinitions.FirstOrDefault(p => p.Name == jv.String);
+					if (definition == null)
+						throw new InvalidOperationException("Only primitive types are allowed in type collections.");
+					return definition;
 				}).ToList();
 
-			Definition = new OneOfSchema {Options = _definitions};
+			Definition = new JsonSchema {OneOf = _definitions.Select(d => d.Definition)};
 		}
+		/// <summary>
+		/// Converts an object to a <see cref="JsonValue"/>.
+		/// </summary>
+		/// <param name="serializer">The <see cref="JsonSerializer"/> instance to use for additional
+		/// serialization of values.</param>
+		/// <returns>The <see cref="JsonValue"/> representation of the object.</returns>
 		public override JsonValue ToJson(JsonSerializer serializer)
 		{
 			return _definitions.ToJson(serializer);
 		}
-		protected bool Equals(JsonSchemaMultiTypeDefinition other)
-		{
-			return base.Equals(other) && _definitions.ContentsEqual(other._definitions);
-		}
+		/// <summary>
+		/// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+		/// </summary>
+		/// <returns>
+		/// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+		/// </returns>
+		/// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
+			if (obj.GetType() != GetType()) return false;
 			return Equals((JsonSchemaMultiTypeDefinition) obj);
 		}
+		/// <summary>
+		/// Serves as a hash function for a particular type. 
+		/// </summary>
+		/// <returns>
+		/// A hash code for the current <see cref="T:System.Object"/>.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
 		public override int GetHashCode()
 		{
 			unchecked
 			{
 				return (base.GetHashCode()*397) ^ (_definitions?.GetCollectionHashCode() ?? 0);
 			}
+		}
+
+		private bool Equals(JsonSchemaMultiTypeDefinition other)
+		{
+			return base.Equals(other) && _definitions.ContentsEqual(other._definitions);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ using System;
 using Manatee.Json.Serialization.Internal;
 using Manatee.Json.Tests.Test_References;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+#if !IOS
 
 namespace Manatee.Json.Tests.Serialization.Internal
 {
@@ -79,3 +81,5 @@ namespace Manatee.Json.Tests.Serialization.Internal
 		}
 	}
 }
+
+#endif

@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ namespace Manatee.Json.Tests.Schema
 		[TestMethod]
 		public void ValidateReturnsErrorOnAnyInvalid()
 		{
-			var schema = new AllOfSchema
+			var schema = new JsonSchema
 				{
-					Requirements = new List<IJsonSchema>
+					AllOf = new List<IJsonSchema>
 						{
-							new ArraySchema(),
-							new NumberSchema()
+							new JsonSchema {Type = JsonSchemaTypeDefinition.Array},
+							new JsonSchema {Type = JsonSchemaTypeDefinition.Number}
 						}
 				};
 			var json = new JsonObject();
@@ -52,12 +52,12 @@ namespace Manatee.Json.Tests.Schema
 		[TestMethod]
 		public void ValidateReturnsValidOnAllValid()
 		{
-			var schema = new AllOfSchema
-				{
-					Requirements = new List<IJsonSchema>
+			var schema = new JsonSchema
+			{
+					AllOf = new List<IJsonSchema>
 						{
-							new NumberSchema {Minimum = 10},
-							new NumberSchema {Maximum = 20}
+							new JsonSchema {Type = JsonSchemaTypeDefinition.Number,Minimum = 10},
+							new JsonSchema {Type = JsonSchemaTypeDefinition.Number,Maximum = 20}
 						}
 				};
 			var json = (JsonValue) 15;

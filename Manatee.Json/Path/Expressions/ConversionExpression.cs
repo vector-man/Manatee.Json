@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -25,11 +25,12 @@ using System;
 
 namespace Manatee.Json.Path.Expressions
 {
-	internal class ConversionExpression<T> : ExpressionTreeNode<T>
+	internal class ConversionExpression<T> : ExpressionTreeNode<T>, IEquatable<ConversionExpression<T>>
 	{
-		public override int Priority => 6;
 		public ExpressionTreeNode<T> Root { get; set; }
 		public Type TargetType { get; set; }
+
+		protected override int BasePriority => 6;
 
 		public override object Evaluate(T json, JsonValue root)
 		{
@@ -41,6 +42,20 @@ namespace Manatee.Json.Path.Expressions
 		{
 			return Root.ToString();
 		}
+		public bool Equals(ConversionExpression<T> other)
+		{
+			if (ReferenceEquals(null, other)) return false;
+			if (ReferenceEquals(this, other)) return true;
+			return Equals(Root, other.Root) && TargetType == other.TargetType;
+		}
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as ConversionExpression<T>);
+		}
+		public override int GetHashCode()
+		{
+			unchecked { return ((Root?.GetHashCode() ?? 0)*397) ^ (TargetType != null ? TargetType.GetHashCode() : 0); }
+		}
 
 		private object CastValue(object value)
 		{
@@ -49,7 +64,9 @@ namespace Manatee.Json.Path.Expressions
 				return new JsonValue((bool)value);
 			if (value is string)
 				return new JsonValue((string)value);
-			return new JsonValue(Convert.ToDouble(value));
+			if (value is IConvertible)
+				return new JsonValue(Convert.ToDouble(value));
+			return value;
 		}
 	}
 }

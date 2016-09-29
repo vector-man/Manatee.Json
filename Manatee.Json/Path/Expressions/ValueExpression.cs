@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -21,12 +21,15 @@
 
 ***************************************************************************************/
 
+using System;
+
 namespace Manatee.Json.Path.Expressions
 {
-	internal class ValueExpression<T> : ExpressionTreeNode<T>
+	internal class ValueExpression<T> : ExpressionTreeNode<T>, IEquatable<ValueExpression<T>>
 	{
-		public override int Priority => 6;
 		public object Value { get; set; }
+
+		protected override int BasePriority => 6;
 
 		public override object Evaluate(T json, JsonValue root)
 		{
@@ -36,7 +39,23 @@ namespace Manatee.Json.Path.Expressions
 		{
 			return Value is string
 				       ? $"\"{Value}\""
-				       : Value.ToString();
+				       : Value is bool
+					       ? Value.ToString().ToLower()
+					       : Value.ToString();
+		}
+		public bool Equals(ValueExpression<T> other)
+		{
+			if (ReferenceEquals(null, other)) return false;
+			if (ReferenceEquals(this, other)) return true;
+			return Equals(Value, other.Value);
+		}
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as ValueExpression<T>);
+		}
+		public override int GetHashCode()
+		{
+			return Value?.GetHashCode() ?? 0;
 		}
 	}
 }

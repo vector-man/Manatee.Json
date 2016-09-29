@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -278,6 +278,7 @@ namespace Manatee.Json.Tests.Serialization
 			var actual = serializer.Deserialize<IInterface>(json);
 			Assert.AreEqual(expected, actual);
 		}
+#if !IOS
 		[TestMethod]
 		public void InterfaceWithoutMap_Successful()
 		{
@@ -286,12 +287,14 @@ namespace Manatee.Json.Tests.Serialization
 				{
 					{"RequiredProp", "test"}
 				};
+			JsonSerializationAbstractionMap.RemoveMap<IInterface>();
 			IInterface expected = new ImplementationClass {RequiredProp = "test"};
 
 			var actual = serializer.Deserialize<IInterface>(json);
 			Assert.AreEqual(expected.RequiredProp, actual.RequiredProp);
 			Assert.AreNotEqual(typeof (ImplementationClass), actual.GetType());
 		}
+#endif
 		[TestMethod]
 		public void InterfaceWithMap_Successful()
 		{
@@ -554,14 +557,13 @@ namespace Manatee.Json.Tests.Serialization
 			Assert.AreSame(actual, actual.LoopProperty.LoopProperty);
 			Assert.AreEqual(0, serializer.SerializationMap.Count);
 		}
-		// This test fails when all tests are run together because the JsonSerializationAbstractionMap
-		// is static and one of the other tests has registered ImplementationClass to be used
-		// for IInterface, and VS is running the tests concurrently.
+#if !IOS
 		[TestMethod]
 		public void UnimplementedInterface_ReturnsRunTimeImplementation()
 		{
 			var serializer = new JsonSerializer();
 			var json = new JsonObject {{"RequiredProp", "test"}};
+			JsonSerializationAbstractionMap.RemoveMap<IInterface>();
 			IInterface expected = new ImplementationClass {RequiredProp = "test"};
 
 			var actual = serializer.Deserialize<IInterface>(json);
@@ -570,6 +572,7 @@ namespace Manatee.Json.Tests.Serialization
 			Assert.AreNotEqual(expected.GetType(), actual.GetType());
 			Assert.AreEqual(expected.RequiredProp, actual.RequiredProp);
 		}
+#endif
 		[TestMethod]
 		public void Fields()
 		{

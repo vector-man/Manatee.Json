@@ -1,3 +1,27 @@
+/***************************************************************************************
+
+	Copyright 2016 Greg Dennis
+
+	   Licensed under the Apache License, Version 2.0 (the "License");
+	   you may not use this file except in compliance with the License.
+	   You may obtain a copy of the License at
+
+		 http://www.apache.org/licenses/LICENSE-2.0
+
+	   Unless required by applicable law or agreed to in writing, software
+	   distributed under the License is distributed on an "AS IS" BASIS,
+	   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	   See the License for the specific language governing permissions and
+	   limitations under the License.
+ 
+	File Name:		ValueComparer.cs
+	Namespace:		Manatee.Json.Path.Expressions
+	Class Name:		ValueComparer
+	Purpose:		Compares values for JSONPath expressions.
+
+***************************************************************************************/
+using System;
+
 namespace Manatee.Json.Path.Expressions
 {
 	internal static class ValueComparer
@@ -7,14 +31,14 @@ namespace Manatee.Json.Path.Expressions
 			var sleft = TryGetString(a);
 			var sright = TryGetString(b);
 			if (sleft != null && sright != null)
-				return string.Compare(sleft, sright, System.StringComparison.Ordinal) == 0;
-			var dleft = TryGetNumber(a);
-			var dright = TryGetNumber(b);
-			if (dleft != null && dright != null)
-				return dleft == dright;
+				return string.Compare(sleft, sright, StringComparison.Ordinal) == 0;
 			var bleft = TryGetBoolean(a);
 			var bright = TryGetBoolean(b);
 			if (bleft != null && bright != null)
+				return bleft == bright;
+			var dleft = TryGetNumber(a);
+			var dright = TryGetNumber(b);
+			if (dleft != null && dright != null)
 				return dleft == dright;
 			return false;
 		}
@@ -23,7 +47,7 @@ namespace Manatee.Json.Path.Expressions
 			var sleft = TryGetString(a);
 			var sright = TryGetString(b);
 			if (sleft != null && sright != null)
-				return string.Compare(sleft, sright, System.StringComparison.Ordinal) < 0;
+				return string.Compare(sleft, sright, StringComparison.Ordinal) < 0;
 			var dleft = TryGetNumber(a);
 			var dright = TryGetNumber(b);
 			if (dleft != null && dright != null)
@@ -35,7 +59,7 @@ namespace Manatee.Json.Path.Expressions
 			var sleft = TryGetString(a);
 			var sright = TryGetString(b);
 			if (sleft != null && sright != null)
-				return string.Compare(sleft, sright, System.StringComparison.Ordinal) > 0;
+				return string.Compare(sleft, sright, StringComparison.Ordinal) > 0;
 			var dleft = TryGetNumber(a);
 			var dright = TryGetNumber(b);
 			if (dleft != null && dright != null)
@@ -48,7 +72,7 @@ namespace Manatee.Json.Path.Expressions
 			var sleft = TryGetString(a);
 			var sright = TryGetString(b);
 			if (sleft != null && sright != null)
-				return string.Compare(sleft, sright, System.StringComparison.Ordinal) <= 0;
+				return string.Compare(sleft, sright, StringComparison.Ordinal) <= 0;
 			var dleft = TryGetNumber(a);
 			var dright = TryGetNumber(b);
 			if (dleft != null && dright != null)
@@ -60,7 +84,7 @@ namespace Manatee.Json.Path.Expressions
 			var sleft = TryGetString(a);
 			var sright = TryGetString(b);
 			if (sleft != null && sright != null)
-				return string.Compare(sleft, sright, System.StringComparison.Ordinal) >= 0;
+				return string.Compare(sleft, sright, StringComparison.Ordinal) >= 0;
 			var dleft = TryGetNumber(a);
 			var dright = TryGetNumber(b);
 			if (dleft != null && dright != null)
@@ -76,7 +100,11 @@ namespace Manatee.Json.Path.Expressions
 		private static double? TryGetNumber(object value)
 		{
 			var jv = value as JsonValue;
-			return jv != null && jv.Type == JsonValueType.Number ? jv.Number : value as double?;
+			if (jv != null && jv.Type == JsonValueType.Number) return jv.Number;
+			if (!(value is bool) && value is IConvertible)
+				return Convert.ToDouble(value);
+			// at this point, we have no idea what this is.
+			return null;
 		}
 		private static bool? TryGetBoolean(object value)
 		{

@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2015 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace Manatee.Json.Parsing
 	{
 		bool Handles(char c);
 		// returns error message, if any.  Null return implies success.
-		string TryParse(string source, ref int index, out JsonValue value);
+		string TryParse(string source, ref int index, out JsonValue value, bool allowExtraChars);
 		string TryParse(StreamReader stream, out JsonValue value);
 	}
 }

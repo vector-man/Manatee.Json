@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -21,14 +21,21 @@
 					current level.
 
 ***************************************************************************************/
+using System;
 using System.Linq;
 using Manatee.Json.Internal;
 
 namespace Manatee.Json.Path.Operators
 {
-	internal class WildCardOperator : IJsonPathOperator
+	internal class WildCardOperator : IJsonPathOperator, IEquatable<WildCardOperator>
 	{
-		public static WildCardOperator Instance { get; } = new WildCardOperator();
+		public static WildCardOperator Instance { get; }
+
+		static WildCardOperator()
+		{
+			Instance = new WildCardOperator();
+		}
+		private WildCardOperator() {}
 
 		public JsonArray Evaluate(JsonArray json, JsonValue root)
 		{
@@ -48,6 +55,19 @@ namespace Manatee.Json.Path.Operators
 		public override string ToString()
 		{
 			return ".*";
+		}
+		public bool Equals(WildCardOperator other)
+		{
+			return !ReferenceEquals(null, other);
+		}
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as WildCardOperator);
+		}
+		public override int GetHashCode()
+		{
+			// ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+			return base.GetHashCode();
 		}
 	}
 }

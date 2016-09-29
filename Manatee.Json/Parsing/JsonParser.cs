@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2015 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -72,39 +72,41 @@ namespace Manatee.Json.Parsing
 				throw new JsonSyntaxException(errorMessage, value);
 			return value;
 		}
-		public static string Parse(string source, ref int index, out JsonValue value)
+		public static string Parse(string source, ref int index, out JsonValue value, bool allowExtraChars = false)
 		{
-			value = null;
 			var length = source.Length;
-			string errorMessage = null;
-			while (value == null && errorMessage == null)
+			char c;
+			var errorMessage = source.SkipWhiteSpace(ref index, length, out  c);
+			if (errorMessage != null)
 			{
-				char c;
-				errorMessage = source.SkipWhiteSpace(ref index, length, out  c);
-				if (errorMessage != null)
-					return errorMessage;
-				var parser = Parsers.FirstOrDefault(p => p.Handles(c));
-				if (parser == null)
-					return "Cannot determine type.";
-				errorMessage = parser.TryParse(source, ref index, out value);
+				value = null;
+				return errorMessage;
 			}
+			var parser = Parsers.FirstOrDefault(p => p.Handles(c));
+			if (parser == null)
+			{
+				value = null;
+				return "Cannot determine type.";
+			}
+			errorMessage = parser.TryParse(source, ref index, out value, allowExtraChars);
 			return errorMessage;
 		}
 		public static string Parse(StreamReader stream, out JsonValue value)
 		{
-			value = null;
-			string errorMessage = null;
-			while (value == null && errorMessage == null)
+			char c;
+			var errorMessage = stream.SkipWhiteSpace(out  c);
+			if (errorMessage != null)
 			{
-				char c;
-				errorMessage = stream.SkipWhiteSpace(out  c);
-				if (errorMessage != null)
-					return errorMessage;
-				var parser = Parsers.FirstOrDefault(p => p.Handles(c));
-				if (parser == null)
-					return "Cannot determine type.";
-				errorMessage = parser.TryParse(stream, out value);
+				value = null;
+				return errorMessage;
 			}
+			var parser = Parsers.FirstOrDefault(p => p.Handles(c));
+			if (parser == null)
+			{
+				value = null;
+				return "Cannot determine type.";
+			}
+			errorMessage = parser.TryParse(stream, out value);
 			return errorMessage;
 		}
 	}

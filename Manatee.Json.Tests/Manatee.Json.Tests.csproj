@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Manatee.Json.Tests</RootNamespace>
     <AssemblyName>Manatee.Json.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
@@ -27,99 +27,72 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Debug\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-4.0|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET4, JETBRAINS_ANNOTATIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-4.5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug-4.5\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Debug-4.5\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-4.5|AnyCPU'">
     <OutputPath>bin\Release-4.5\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET45, JETBRAINS_ANNOTATIONS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release-4.5\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-3.5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug-3.5\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Debug-3.5\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-3.5|AnyCPU'">
     <OutputPath>bin\Release-3.5\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET35, JETBRAINS_ANNOTATIONS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release-3.5\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-3.5C|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug-3.5C\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Debug-3.5C\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-3.5C|AnyCPU'">
     <OutputPath>bin\Release-3.5C\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET35C, JETBRAINS_ANNOTATIONS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release-3.5C\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-4.0C|AnyCPU'">
-    <OutputPath>bin\Debug-4.0C\</OutputPath>
-    <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Debug-4.0C\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-4.0C|AnyCPU'">
     <OutputPath>bin\Release-4.0C\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET4C, JETBRAINS_ANNOTATIONS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release-4.0C\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-Mono|AnyCPU'">
     <OutputPath>bin\Release-Mono\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET35, IOS, JETBRAINS_ANNOTATIONS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\Greg\AppData\Local\Temp\vs7F7.tmp\Release-Mono\</IntermediateOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -128,10 +101,6 @@
     <AssemblyOriginatorKeyFile>Manatee.Json.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Manatee.StateMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=15909d91027a225e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Manatee.StateMachine.1.1.2\lib\net40\Manatee.StateMachine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -143,6 +112,8 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -161,8 +132,21 @@
     <Compile Include="JsonValueEqualsTest.cs" />
     <Compile Include="JsonValueOperatorTest.cs" />
     <Compile Include="JsonValueParseTest.cs" />
+    <Compile Include="Path\EvaluationTest.cs" />
+    <Compile Include="Path\FilterExpressionTest.cs" />
+    <Compile Include="Path\IndexExpressionParseTest.cs" />
+    <Compile Include="Path\ParsingFails.cs" />
+    <Compile Include="Path\ParsingTest.cs" />
+    <Compile Include="Path\TestSuite\JsonPathTestSuite.cs" />
+    <Compile Include="Path\TestSuite\PathTest.cs" />
+    <Compile Include="Path\TestSuite\PathTestSet.cs" />
+    <Compile Include="Path\ToStringTest.cs" />
+    <Compile Include="Schema\JsonSchemaTypeDefinitionTest.cs" />
+    <Compile Include="Schema\JsonSchemaTypeTest.cs" />
     <Compile Include="Schema\SelfValidationTest.cs" />
-    <Compile Include="Schema\MultiSchemaTest.cs" />
+    <Compile Include="Schema\TestSuite\JsonSchemaTestSuite.cs" />
+    <Compile Include="Schema\TestSuite\SchemaTest.cs" />
+    <Compile Include="Schema\TestSuite\SchemaTestSet.cs" />
     <Compile Include="Serialization\JsonDeserializerTest.cs" />
     <None Include="Test References\InvalidSchemaValidatedClass.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -176,7 +160,6 @@
     <Compile Include="Schema\ArraySchemaTest.cs" />
     <Compile Include="Schema\AnyOfSchemaTest.cs" />
     <Compile Include="Schema\BooleanSchemaTest.cs" />
-    <Compile Include="Schema\Draft04SchemaTest.cs" />
     <Compile Include="Schema\StringSchemaTest.cs" />
     <Compile Include="Schema\OneOfSchemaTest.cs" />
     <Compile Include="Schema\ObjectSchemaTest.cs" />
@@ -207,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Manatee.Json.snk" />
-    <None Include="packages.config" />
     <None Include="TrelloCard.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

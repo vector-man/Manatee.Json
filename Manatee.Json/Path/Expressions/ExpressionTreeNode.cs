@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -24,8 +24,17 @@ namespace Manatee.Json.Path.Expressions
 {
 	internal abstract class ExpressionTreeNode<T>
 	{
-		public abstract int Priority { get; }
+		private int _priorityBump;
+
+		public int Priority => BasePriority + _priorityBump;
+
+		protected abstract int BasePriority { get; }
 
 		public abstract object Evaluate(T json, JsonValue root);
+
+		public void BumpPriority()
+		{
+			_priorityBump += 10;
+		}
 	}
 }

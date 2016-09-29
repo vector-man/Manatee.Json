@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2015 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ namespace Manatee.Json.Parsing
 		{
 			return c.In('t', 'T', 'f', 'F');
 		}
-		public string TryParse(string source, ref int index, out JsonValue value)
+		public string TryParse(string source, ref int index, out JsonValue value, bool allowExtraChars)
 		{
 			char[] buffer;
 			int count;

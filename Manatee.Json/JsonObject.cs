@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************
 
-	Copyright 2012 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -22,9 +22,11 @@
 
 ***************************************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Manatee.Json.Internal;
 
 namespace Manatee.Json
 {
@@ -86,7 +88,8 @@ namespace Manatee.Json
 		/// Adds the specified key and value to the dictionary.
 		/// </summary>
 		/// <param name="key">The key of the element to add.</param>
-		/// <param name="value">The value of the element to add. The value can be null for reference types.</param>
+		/// <param name="value">The value of the element to add. If the value is null,
+		/// it will be replaced by <see cref="JsonValue.Null"/>.</param>
 		public new void Add(string key, JsonValue value)
 		{
 			base.Add(key, value ?? JsonValue.Null);
@@ -116,8 +119,10 @@ namespace Manatee.Json
 		{
 			var json = obj as JsonObject;
 			if (json == null) return false;
-			return Keys.All(json.ContainsKey) && (Keys.Count == json.Keys.Count) &&
-			       this.All(pair => json[pair.Key].Equals(pair.Value));
+
+			if (!Keys.ContentsEqual(json.Keys)) return false;
+
+			return this.All(pair => json[pair.Key].Equals(pair.Value));
 		}
 		/// <summary>
 		/// Serves as a hash function for a particular type. 
@@ -128,7 +133,7 @@ namespace Manatee.Json
 		/// <filterpriority>2</filterpriority>
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+			return this.GetCollectionHashCode();
 		}
 	}
 }

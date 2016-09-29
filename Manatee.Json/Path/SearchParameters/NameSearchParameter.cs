@@ -1,6 +1,6 @@
 /***************************************************************************************
 
-	Copyright 2014 Greg Dennis
+	Copyright 2016 Greg Dennis
 
 	   Licensed under the Apache License, Version 2.0 (the "License");
 	   you may not use this file except in compliance with the License.
@@ -20,12 +20,14 @@
 	Purpose:		Indicates that a search should look for a named parameter.
 
 ***************************************************************************************/
+using Manatee.Json.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Manatee.Json.Path.SearchParameters
 {
-	internal class NameSearchParameter : IJsonPathSearchParameter
+	internal class NameSearchParameter : IJsonPathSearchParameter, IEquatable<NameSearchParameter>
 	{
 		private readonly string _name;
 
@@ -55,7 +57,23 @@ namespace Manatee.Json.Path.SearchParameters
 		}
 		public override string ToString()
 		{
-			return _name;
+			return _name.Any(c => !char.IsLetterOrDigit(c)) || _name.IsNullOrWhiteSpace()
+					   ? $"'{_name}'"
+					   : _name;
+		}
+		public bool Equals(NameSearchParameter other)
+		{
+			if (ReferenceEquals(null, other)) return false;
+			if (ReferenceEquals(this, other)) return true;
+			return string.Equals(_name, other._name);
+		}
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as NameSearchParameter);
+		}
+		public override int GetHashCode()
+		{
+			return _name?.GetHashCode() ?? 0;
 		}
 	}
 }
