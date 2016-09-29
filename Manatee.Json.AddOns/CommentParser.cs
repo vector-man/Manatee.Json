@@ -4,28 +4,28 @@ using Manatee.Json.Parsing;
 
 namespace Manatee.Json.AddOns
 {
-    public class CommentParser : IJsonParser
-    {
-	    public bool Handles(char c)
-	    {
-		    return c == '/';
-	    }
-	    public string TryParse(string source, ref int index, out JsonValue value)
-	    {
-		    value = null;
-		    var text = source.Substring(index);
-		    if (text.Length < 2)
-			    return "Unexpected end of input.";
+	public class CommentParser : IJsonParser
+	{
+		public bool Handles(char c)
+		{
+			return c == '/';
+		}
+		public string TryParse(string source, ref int index, out JsonValue value, bool allowExtraChars)
+		{
+			value = null;
+			var text = source.Substring(index);
+			if (text.Length < 2)
+				return "Unexpected end of input.";
 			if (text.StartsWith("//"))
 				return ParseComment(text, ref index, "\n");
 			if (text.StartsWith("/*"))
 				return ParseComment(text, ref index, "*/");
-		    return $"Sequence '{text.Substring(0, 2)}' not recognized.";
-	    }
-	    public string TryParse(StreamReader stream, out JsonValue value)
-	    {
+			return $"Sequence '{text.Substring(0, 2)}' not recognized.";
+		}
+		public string TryParse(StreamReader stream, out JsonValue value)
+		{
 			value = null;
-		    var start = new char[2];
+			var start = new char[2];
 			var count = stream.Read(start, 0, 2);
 			if (count < 2)
 				return "Unexpected end of input.";
