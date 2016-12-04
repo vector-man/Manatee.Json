@@ -1,9 +1,7 @@
 ﻿using System.IO;
-using Manatee.Json.AddOns;
-using Manatee.Json.AddOns.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Manatee.Json.Tests.AddOns
+namespace Manatee.Json.AddOns.Tests
 {
 	[TestClass]
 	public class CommentParserTest
@@ -13,7 +11,39 @@ namespace Manatee.Json.Tests.AddOns
 		{
 			JsonConfiguration.AddParser(new CommentParser());
 			var s = "{\"bool\":false,// this is a comment\n\"int\":42,\"string\":\"a string\"}";
-			var expected = new JsonObject {{"bool", false}, {"int", 42}, {"string", "a string"}};
+			var expected = new JsonObject { { "bool", false }, { "int", 42 }, { "string", "a string" } };
+			var actual = JsonValue.Parse(s);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void LineCommentIsIgnoredAfterColorOfKeyValuePair_String()
+		{
+			JsonConfiguration.AddParser(new CommentParser());
+			var s = "{\"bool\":// this is a comment\nfalse,\"int\":42,\"string\":\"a string\"}";
+			var expected = new JsonObject { { "bool", false }, { "int", 42 }, { "string", "a string" } };
+			var actual = JsonValue.Parse(s);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(JsonSyntaxException))]
+		public void LineCommentIsNotAllowedBeforeColonOfKeyValuePair_String()
+		{
+			JsonConfiguration.AddParser(new CommentParser());
+			var s = "{\"bool\"// this is a comment\n:false,\"int\":42,\"string\":\"a string\"}";
+			var expected = new JsonObject { { "bool", false }, { "int", 42 }, { "string", "a string" } };
+			var actual = JsonValue.Parse(s);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(JsonSyntaxException))]
+		public void SpanCommentIsNotAllowedBeforeColonOfKeyValuePair_String()
+		{
+			JsonConfiguration.AddParser(new CommentParser());
+			var s = "{\"bool\"/* this is a comment */:false,\"int\":42,\"string\":\"a string\"}";
+			var expected = new JsonObject { { "bool", false }, { "int", 42 }, { "string", "a string" } };
 			var actual = JsonValue.Parse(s);
 			Assert.AreEqual(expected, actual);
 		}
@@ -41,6 +71,7 @@ namespace Manatee.Json.Tests.AddOns
 		[ExpectedException(typeof(JsonSyntaxException))]
 		public void ParserNotRegistered_String()
 		{
+			JsonConfiguration.RemoveParser<CommentParser>();
 			var s = "{\"bool\":false,// this is invalid\n\"int\":42,\"string\":\"a string\"}";
 			var actual = JsonValue.Parse(s);
 		}
@@ -78,6 +109,7 @@ namespace Manatee.Json.Tests.AddOns
 		[ExpectedException(typeof(JsonSyntaxException))]
 		public void ParserNotRegistered_Stream()
 		{
+			JsonConfiguration.RemoveParser<CommentParser>();
 			var s = new StreamReader("{\"bool\":false,// this is invalid\n\"int\":42,\"string\":\"a string\"}".ToStream());
 			var actual = JsonValue.Parse(s);
 		}

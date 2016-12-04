@@ -68,8 +68,9 @@ namespace Manatee.Json.Parsing
 				}
 				index++;
 				// get value (whitespace is removed in Parse)
-				JsonValue item;
-				message = JsonParser.Parse(source, ref index, out item);
+				JsonValue item = null;
+				while (item == null && message == null)
+					message = JsonParser.Parse(source, ref index, out item);
 				obj.Add(key, item);
 				if (message != null) return message;
 				message = source.SkipWhiteSpace(ref index, length, out c);
