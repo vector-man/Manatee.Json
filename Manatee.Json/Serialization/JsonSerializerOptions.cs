@@ -104,6 +104,7 @@ namespace Manatee.Json.Serialization
 		/// Gets and sets whether public fields should be serialized during autoserialization.
 		/// </summary>
 		public bool AutoSerializeFields { get; set; }
+		public bool UseExpressions { get; set; }
 
 		internal bool IncludeContentSample { get; set; }
 

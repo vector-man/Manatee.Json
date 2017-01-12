@@ -130,7 +130,7 @@ namespace Manatee.Json.Serialization.Internal.Serializers
 		{
 			var mapper = (JsonMapToAttribute) info.GetCustomAttributes(typeof(JsonMapToAttribute), false).FirstOrDefault();
 			var name = mapper == null ? info.Name : mapper.MapToKey;
-			return new SerializationInfo(info, name);
+			return SerializationInfoFactory.Get(info, name);
 		}
 		private static IEnumerable<PropertyInfo> GetInstanceProperties(Type type)
 		{

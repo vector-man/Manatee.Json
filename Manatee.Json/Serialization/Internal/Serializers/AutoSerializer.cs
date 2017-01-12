@@ -83,21 +83,32 @@ namespace Manatee.Json.Serialization.Internal.Serializers
 			var dict = new Dictionary<SerializationInfo, JsonValue>();
 			foreach (var property in properties)
 			{
-				object value;
+				object value = null;
+				if (serializer.Options.UseExpressions)
+				{
+					value = property.Get(obj);
+					if (value == null && !serializer.Options.EncodeDefaultValues) continue;
+				}
 				Type type;
 				var propertyInfo = property.MemberInfo as PropertyInfo;
 				if (propertyInfo != null)
 				{
-					if (propertyInfo.GetIndexParameters().Any()) continue;
-					value = propertyInfo.GetValue(obj, null);
-					if (value == null && !serializer.Options.EncodeDefaultValues) continue;
+					if (!serializer.Options.UseExpressions)
+					{
+						if (propertyInfo.GetIndexParameters().Any()) continue;
+						value = propertyInfo.GetValue(obj, null);
+						if (value == null && !serializer.Options.EncodeDefaultValues) continue;
+					}
 					type = propertyInfo.PropertyType;
 				}
 				else
 				{
 					var fieldInfo = (FieldInfo) property.MemberInfo;
-					value = fieldInfo.GetValue(obj);
-					if (value == null && !serializer.Options.EncodeDefaultValues) continue;
+					if (!serializer.Options.UseExpressions)
+					{
+						value = fieldInfo.GetValue(obj);
+						if (value == null && !serializer.Options.EncodeDefaultValues) continue;
+					}
 					type = fieldInfo.FieldType;
 				}
 				var json = JsonValue.Null;
@@ -106,11 +117,10 @@ namespace Manatee.Json.Serialization.Internal.Serializers
 					var serialize = SerializerCache.GetSerializeMethod(type);
 					json = (JsonValue) serialize.Invoke(serializer, new[] {value});
 				}
-				if ((json == JsonValue.Null) && !serializer.Options.EncodeDefaultValues) continue;
+				if (json == JsonValue.Null && !serializer.Options.EncodeDefaultValues) continue;
+
 				if (serializer.Options.IncludeContentSample && json.Type == JsonValueType.Array)
-				{
 					AddSample(type, json.Array, serializer);
-				}
 
 				dict.Add(property, json);
 			}

@@ -343,6 +343,7 @@
     <Compile Include="Serialization\Internal\Serializers\JsonSerializableSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\Internal\Serializers\MemberExpression.cs" />
     <Compile Include="Serialization\Internal\Serializers\NumericSerializer.cs">
       <SubType>Code</SubType>
     </Compile>

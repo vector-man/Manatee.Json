@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Manatee.Json.Serialization;
 using Manatee.Json.Tests.Test_References;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -105,14 +106,14 @@ namespace Manatee.Json.Tests.Serialization
 		{
 			var serializer = new JsonSerializer();
 			var obj = new ObjectWithBasicProps
-				{
-					StringProp = "stringValue",
-					IntProp = 42,
-					DoubleProp = 6.0,
-					BoolProp = true,
-					EnumProp = TestEnum.BasicEnumValue,
-					MappedProp = 4
-				};
+			{
+				StringProp = "stringValue",
+				IntProp = 42,
+				DoubleProp = 6.0,
+				BoolProp = true,
+				EnumProp = TestEnum.BasicEnumValue,
+				MappedProp = 4
+			};
 			JsonValue expected = new JsonObject
 				{
 					{"StringProp", "stringValue"},
@@ -124,6 +125,74 @@ namespace Manatee.Json.Tests.Serialization
 				};
 			var actual = serializer.Serialize(obj);
 			Assert.AreEqual(expected, actual);
+		}
+		[TestMethod]
+		public void Basic_Successful_ReflectionPerf()
+		{
+			PerformanceRun(() =>
+				{
+					var serializer = new JsonSerializer();
+					var obj = new ObjectWithBasicProps
+						{
+							StringProp = "stringValue",
+							IntProp = 42,
+							DoubleProp = 6.0,
+							BoolProp = true,
+							EnumProp = TestEnum.BasicEnumValue,
+							MappedProp = 4
+						};
+					JsonValue expected = new JsonObject
+						{
+							{"StringProp", "stringValue"},
+							{"IntProp", 42},
+							{"DoubleProp", 6},
+							{"BoolProp", true},
+							{"EnumProp", 1},
+							{"MapToMe", 4}
+						};
+					var actual = serializer.Serialize(obj);
+					Assert.AreEqual(expected, actual);
+				}, 1000);
+		}
+		[TestMethod]
+		public void Basic_Successful_ExpressionsPerf()
+		{
+			PerformanceRun(() =>
+				{
+					var serializer = new JsonSerializer {Options = {UseExpressions = true}};
+					var obj = new ObjectWithBasicProps
+						{
+							StringProp = "stringValue",
+							IntProp = 42,
+							DoubleProp = 6.0,
+							BoolProp = true,
+							EnumProp = TestEnum.BasicEnumValue,
+							MappedProp = 4
+						};
+					JsonValue expected = new JsonObject
+						{
+							{"StringProp", "stringValue"},
+							{"IntProp", 42},
+							{"DoubleProp", 6},
+							{"BoolProp", true},
+							{"EnumProp", 1},
+							{"MapToMe", 4}
+						};
+					var actual = serializer.Serialize(obj);
+					Assert.AreEqual(expected, actual);
+				}, 1000);
+		}
+
+		private static void PerformanceRun(Action test, int runCount)
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < runCount; i++)
+			{
+				test();
+			}
+			stopwatch.Stop();
+			Debug.WriteLine(stopwatch.ElapsedTicks);
 		}
 		[TestMethod]
 		public void BasicWithNamedEnum_Successful()
