@@ -160,8 +160,6 @@ namespace Manatee.Json.Schema
             if (!address.IsNullOrWhiteSpace())
             {
                 Uri uri;
-                Uri parent;
-                Uri.TryCreate(documentPath + "/", UriKind.Absolute, out parent);
 
                 var search = JsonPathWith.Search("id");
                 var allIds = new Stack<string>(search.Evaluate(root ?? new JsonObject()).Select(jv => jv.String));
