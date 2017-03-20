@@ -1,7 +1,7 @@
 ﻿namespace Manatee.Json.Schema
 {
-	internal interface ICanReferenceSchema
-	{
-		void ResolveReferences(JsonValue root);
-	}
+    internal interface ICanReferenceSchema
+    {
+        void ResolveReferences(JsonValue root, string documentPath);
+    }
 }

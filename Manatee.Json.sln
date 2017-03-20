@@ -66,6 +66,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E74B7538-5E17-43C7-925B-33784945312E} = {6E84846A-D11A-4B3F-9588-C815FB0A22C5}
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 6f23b109-6b4a-4856-8d96-75cbc566c5eb
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Json.vsmdi
 	EndGlobalSection
