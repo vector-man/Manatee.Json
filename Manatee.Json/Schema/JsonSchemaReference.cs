@@ -168,7 +168,7 @@ namespace Manatee.Json.Schema
                     address = allIds.Pop() + address;
                 }
 
-                address = string.IsNullOrEmpty(documentPath) ? address : new Uri(parent, address).ToString();
+                address = string.IsNullOrEmpty(documentPath) ? address : System.IO.Path.Combine(documentPath, address);
                 jValue = JsonSchemaRegistry.Get(address).ToJson(null);
             }
             if (jValue == null) return root;
